@@ -1,0 +1,173 @@
+{
+  "name": "Linux Optimization Checker",
+  "description": "Web-based interface for Linux system optimization and monitoring",
+  "version": "1.0.0",
+  "author": "Linux Optimization Checker",
+  "license": "MIT",
+  
+  "webui": {
+    "title": "Linux Optimization Checker",
+    "icon": "assets/icon.png",
+    "theme": {
+      "primary": "#3b82f6",
+      "secondary": "#64748b",
+      "dark": false
+    },
+    "window": {
+      "width": 1200,
+      "height": 800,
+      "resizable": true,
+      "maximizable": true,
+      "minimizable": true,
+      "fullscreenable": true,
+      "always_on_top": false
+    },
+    "menu": {
+      "enabled": true,
+      "items": [
+        {
+          "label": "File",
+          "submenu": [
+            {
+              "label": "Export Report",
+              "click": "exportReport"
+            },
+            {
+              "label": "Export History",
+              "click": "exportHistoryData"
+            },
+            {
+              "label": "Clear Data",
+              "click": "clearAllData"
+            },
+            {
+              "label": "Exit",
+              "click": "exitApp"
+            }
+          ]
+        },
+        {
+          "label": "Tools",
+          "submenu": [
+            {
+              "label": "Install Tools",
+              "click": "runInstallScript"
+            },
+            {
+              "label": "System Check",
+              "click": "runCheckScript"
+            },
+            {
+              "label": "Start Monitoring",
+              "click": "startMonitoring"
+            },
+            {
+              "label": "Stop Monitoring",
+              "click": "stopMonitoring"
+            }
+          ]
+        },
+        {
+          "label": "View",
+          "submenu": [
+            {
+              "label": "Toggle Dark Mode",
+              "click": "toggleTheme"
+            },
+            {
+              "label": "Refresh Stats",
+              "click": "refreshStats"
+            },
+            {
+              "label": "Reset Charts",
+              "click": "clearCharts"
+            }
+          ]
+        },
+        {
+          "label": "Help",
+          "submenu": [
+            {
+              "label": "About",
+              "click": "showAbout"
+            },
+            {
+              "label": "Documentation",
+              "click": "openDocs"
+            },
+            {
+              "label": "Check for Updates",
+              "click": "checkUpdates"
+            }
+          ]
+        }
+      ]
+    },
+    "tray": {
+      "enabled": true,
+      "icon": "assets/tray-icon.png",
+      "menu": [
+        {
+          "label": "Show App",
+          "click": "showApp"
+        },
+        {
+          "label": "Start Monitoring",
+          "click": "startMonitoring"
+        },
+        {
+          "label": "Stop Monitoring",
+          "click": "stopMonitoring"
+        },
+        {
+          "label": "Exit",
+          "click": "exitApp"
+        }
+      ]
+    }
+  },
+  
+  "security": {
+    "allow_file_access": true,
+    "allow_external_urls": false,
+    "cors_enabled": false
+  },
+  
+  "scripts": {
+    "start": "webui serve . --port 8080",
+    "dev": "webui serve . --port 8080 --dev",
+    "build": "webui build .",
+    "package": "webui package ."
+  },
+  
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "font-awesome": "^4.7.0"
+  },
+  
+  "build": {
+    "output_dir": "dist",
+    "assets": [
+      "assets/**/*",
+      "styles.css",
+      "script.js"
+    ],
+    "minify": true,
+    "compress": true
+  },
+  
+  "platforms": {
+    "linux": {
+      "executable_name": "linux-optimizer",
+      "icon": "assets/icon.png"
+    },
+    "windows": {
+      "executable_name": "LinuxOptimizer.exe",
+      "icon": "assets/icon.ico"
+    },
+    "macos": {
+      "executable_name": "LinuxOptimizer",
+      "icon": "assets/icon.icns"
+    }
+  }
+}
