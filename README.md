@@ -1,3 +1,14 @@
+## Current issues
+-[] In the RECOMMENDATIONS section, pressing the buttons does not give any feedback.
+- [ ] in the installer, I see a progress bar, but I think its quite deceptive as it might not work.
+- [ ] In the System Check menu, When Clicking Generate report the button doesn't seem to work. 
+- [ ] In the tweaks section it doesnt say if its an improvement; All the tooltips need more explanation.
+- [ ] in the install tools, the tools randomly say if they are installed or not, pressing the check status button randomly says if programs are installed or not.
+
+- [ ] A new section with different tools should be installed; 
+- [ ] in the live monitoring, I believe the dashboard is not reading the values correctly, as memory jumps all over the place. 
+
+
 # Linux Optimization Checker - WebUI
 
 A modern, web-based graphical interface for Linux system optimization and monitoring. This application provides a user-friendly dashboard to run optimization scripts, monitor system performance, and receive personalized recommendations.
