@@ -61,6 +61,10 @@
                             <i class="fas fa-lightbulb"></i>
                             <span>Recommendations</span>
                         </li>
+                        <li class="nav-item" data-tab="tweaks">
+                            <i class="fas fa-sliders-h"></i>
+                            <span>System Tweaks</span>
+                        </li>
                         <li class="nav-item" data-tab="history">
                             <i class="fas fa-history"></i>
                             <span>History</span>
@@ -430,6 +434,242 @@
                             <button class="btn-secondary" id="refreshRecommendationsBtn">
                                 <i class="fas fa-sync"></i>
                                 Refresh Recommendations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tweaks Tab -->
+                <div class="tab-content" id="tweaks-content">
+                    <div class="tweaks-panel">
+                        <div class="panel-header">
+                            <h2><i class="fas fa-sliders-h"></i> System Optimization Tweaks</h2>
+                            <p>Apply advanced system optimizations for better performance</p>
+                        </div>
+                        
+                        <div class="tweaks-categories">
+                            <!-- CPU Tweaks -->
+                            <div class="tweak-category">
+                                <div class="category-header">
+                                    <h3><i class="fas fa-microchip"></i> CPU Optimization</h3>
+                                    <span class="category-status" id="cpuTweaksStatus">Not Applied</span>
+                                </div>
+                                <div class="tweak-items">
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>CPU Governor</h4>
+                                            <p>Set CPU frequency scaling for optimal performance</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="cpuGovernor" class="tweak-select">
+                                                <option value="ondemand">Balanced (ondemand)</option>
+                                                <option value="performance">Performance</option>
+                                                <option value="powersave">Power Save</option>
+                                                <option value="conservative">Conservative</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyCpuGovernor">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>CPU Frequency Limits</h4>
+                                            <p>Set minimum and maximum CPU frequencies</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <div class="frequency-controls">
+                                                <input type="number" id="cpuMinFreq" placeholder="Min MHz">
+                                                <input type="number" id="cpuMaxFreq" placeholder="Max MHz">
+                                            </div>
+                                            <button class="btn-secondary" id="applyCpuFreq">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Memory Tweaks -->
+                            <div class="tweak-category">
+                                <div class="category-header">
+                                    <h3><i class="fas fa-memory"></i> Memory Optimization</h3>
+                                    <span class="category-status" id="memoryTweaksStatus">Not Applied</span>
+                                </div>
+                                <div class="tweak-items">
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>Swappiness</h4>
+                                            <p>Control how aggressively the system uses swap</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="swappiness" class="tweak-select">
+                                                <option value="1">Minimal Swap (1)</option>
+                                                <option value="10">Low Swap (10)</option>
+                                                <option value="60" selected>Default (60)</option>
+                                                <option value="100">High Swap (100)</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applySwappiness">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>VM Dirty Ratio</h4>
+                                            <p>Control when dirty pages are written to disk</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="dirtyRatio" class="tweak-select">
+                                                <option value="5">Aggressive (5%)</option>
+                                                <option value="10">Moderate (10%)</option>
+                                                <option value="20" selected>Default (20%)</option>
+                                                <option value="40">Conservative (40%)</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyDirtyRatio">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Disk Tweaks -->
+                            <div class="tweak-category">
+                                <div class="category-header">
+                                    <h3><i class="fas fa-hdd"></i> Disk Optimization</h3>
+                                    <span class="category-status" id="diskTweaksStatus">Not Applied</span>
+                                </div>
+                                <div class="tweak-items">
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>I/O Scheduler</h4>
+                                            <p>Optimize disk I/O scheduling algorithm</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="ioScheduler" class="tweak-select">
+                                                <option value="mq-deadline">Deadline (SSD/HDD)</option>
+                                                <option value="bfq">BFQ (Desktop)</option>
+                                                <option value="none">None (NVMe)</option>
+                                                <option value="kyber">Kyber (Fast Storage)</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyIoScheduler">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>Read-Ahead Buffer</h4>
+                                            <p>Optimize disk read-ahead for better throughput</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="readAhead" class="tweak-select">
+                                                <option value="128">Default (128KB)</option>
+                                                <option value="256">High Performance (256KB)</option>
+                                                <option value="512">Maximum (512KB)</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyReadAhead">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Network Tweaks -->
+                            <div class="tweak-category">
+                                <div class="category-header">
+                                    <h3><i class="fas fa-network-wired"></i> Network Optimization</h3>
+                                    <span class="category-status" id="networkTweaksStatus">Not Applied</span>
+                                </div>
+                                <div class="tweak-items">
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>TCP Window Scaling</h4>
+                                            <p>Optimize TCP window size for better throughput</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <label class="switch">
+                                                <input type="checkbox" id="tcpWindowScaling">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <button class="btn-secondary" id="applyTcpWindow">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>Network Buffer Size</h4>
+                                            <p>Optimize network buffer sizes for high-speed connections</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="networkBuffer" class="tweak-select">
+                                                <option value="default">Default</option>
+                                                <option value="highspeed">High Speed</option>
+                                                <option value="lowlatency">Low Latency</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyNetworkBuffer">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Power Management Tweaks -->
+                            <div class="tweak-category">
+                                <div class="category-header">
+                                    <h3><i class="fas fa-battery-three-quarters"></i> Power Management</h3>
+                                    <span class="category-status" id="powerTweaksStatus">Not Applied</span>
+                                </div>
+                                <div class="tweak-items">
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>CPU Idle States</h4>
+                                            <p>Control CPU power saving states</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <select id="cpuIdleStates" class="tweak-select">
+                                                <option value="0">Disable C-states</option>
+                                                <option value="1" selected>Enable C-states</option>
+                                            </select>
+                                            <button class="btn-secondary" id="applyCpuIdle">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>USB Power Management</h4>
+                                            <p>Enable/disable USB device power saving</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <label class="switch">
+                                                <input type="checkbox" id="usbPowerMgmt" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                            <button class="btn-secondary" id="applyUsbPower">Apply</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tweak-item">
+                                        <div class="tweak-info">
+                                            <h4>WiFi Power Management</h4>
+                                            <p>Control WiFi power saving modes</p>
+                                        </div>
+                                        <div class="tweak-controls">
+                                            <label class="switch">
+                                                <input type="checkbox" id="wifiPowerMgmt">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <button class="btn-secondary" id="applyWifiPower">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tweaks-actions">
+                            <button class="btn-primary" id="applyAllTweaks">
+                                <i class="fas fa-check-double"></i>
+                                Apply All Tweaks
+                            </button>
+                            <button class="btn-secondary" id="resetAllTweaks">
+                                <i class="fas fa-undo"></i>
+                                Reset All Tweaks
+                            </button>
+                            <button class="btn-secondary" id="exportTweaks">
+                                <i class="fas fa-file-export"></i>
+                                Export Configuration
                             </button>
                         </div>
                     </div>

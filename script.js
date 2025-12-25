@@ -100,6 +100,63 @@ class LinuxOptimizer {
             this.exportHistoryData();
         });
 
+        // Tweak actions
+        document.getElementById('applyCpuGovernor').addEventListener('click', () => {
+            this.applyCpuGovernor();
+        });
+
+        document.getElementById('applyCpuFreq').addEventListener('click', () => {
+            this.applyCpuFrequency();
+        });
+
+        document.getElementById('applySwappiness').addEventListener('click', () => {
+            this.applySwappiness();
+        });
+
+        document.getElementById('applyDirtyRatio').addEventListener('click', () => {
+            this.applyDirtyRatio();
+        });
+
+        document.getElementById('applyIoScheduler').addEventListener('click', () => {
+            this.applyIoScheduler();
+        });
+
+        document.getElementById('applyReadAhead').addEventListener('click', () => {
+            this.applyReadAhead();
+        });
+
+        document.getElementById('applyTcpWindow').addEventListener('click', () => {
+            this.applyTcpWindowScaling();
+        });
+
+        document.getElementById('applyNetworkBuffer').addEventListener('click', () => {
+            this.applyNetworkBuffer();
+        });
+
+        document.getElementById('applyCpuIdle').addEventListener('click', () => {
+            this.applyCpuIdleStates();
+        });
+
+        document.getElementById('applyUsbPower').addEventListener('click', () => {
+            this.applyUsbPowerManagement();
+        });
+
+        document.getElementById('applyWifiPower').addEventListener('click', () => {
+            this.applyWifiPowerManagement();
+        });
+
+        document.getElementById('applyAllTweaks').addEventListener('click', () => {
+            this.applyAllTweaks();
+        });
+
+        document.getElementById('resetAllTweaks').addEventListener('click', () => {
+            this.resetAllTweaks();
+        });
+
+        document.getElementById('exportTweaks').addEventListener('click', () => {
+            this.exportTweaksConfig();
+        });
+
         // Modal actions
         document.getElementById('terminalCloseBtn').addEventListener('click', () => {
             this.closeModal('terminalModal');
@@ -783,6 +840,247 @@ class LinuxOptimizer {
 
     showError(message) {
         this.addToTerminal(`Error: ${message}`);
+    }
+
+    // Tweak Implementation Functions
+    applyCpuGovernor() {
+        const governor = document.getElementById('cpuGovernor').value;
+        this.addToTerminal(`Setting CPU governor to: ${governor}`);
+        this.addToTerminal(`Command: echo ${governor} | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor`);
+        
+        // Simulate application
+        setTimeout(() => {
+            this.addToTerminal('CPU governor applied successfully');
+            this.updateTweakStatus('cpuTweaksStatus', 'applied');
+            this.showToast('CPU governor updated');
+        }, 1000);
+    }
+
+    applyCpuFrequency() {
+        const minFreq = document.getElementById('cpuMinFreq').value;
+        const maxFreq = document.getElementById('cpuMaxFreq').value;
+        
+        if (!minFreq || !maxFreq) {
+            this.addToTerminal('Please specify both minimum and maximum frequencies');
+            return;
+        }
+        
+        this.addToTerminal(`Setting CPU frequency: ${minFreq}MHz - ${maxFreq}MHz`);
+        this.addToTerminal(`Commands:`);
+        this.addToTerminal(`  echo ${minFreq}000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq`);
+        this.addToTerminal(`  echo ${maxFreq}000 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq`);
+        
+        setTimeout(() => {
+            this.addToTerminal('CPU frequency limits applied successfully');
+            this.updateTweakStatus('cpuTweaksStatus', 'applied');
+            this.showToast('CPU frequency limits updated');
+        }, 1000);
+    }
+
+    applySwappiness() {
+        const swappiness = document.getElementById('swappiness').value;
+        this.addToTerminal(`Setting swappiness to: ${swappiness}`);
+        this.addToTerminal(`Command: echo vm.swappiness=${swappiness} | sudo tee -a /etc/sysctl.conf`);
+        
+        setTimeout(() => {
+            this.addToTerminal('Swappiness applied successfully');
+            this.updateTweakStatus('memoryTweaksStatus', 'applied');
+            this.showToast('Memory swappiness updated');
+        }, 1000);
+    }
+
+    applyDirtyRatio() {
+        const ratio = document.getElementById('dirtyRatio').value;
+        this.addToTerminal(`Setting dirty ratio to: ${ratio}%`);
+        this.addToTerminal(`Command: echo vm.dirty_ratio=${ratio} | sudo tee -a /etc/sysctl.conf`);
+        
+        setTimeout(() => {
+            this.addToTerminal('Dirty ratio applied successfully');
+            this.updateTweakStatus('memoryTweaksStatus', 'applied');
+            this.showToast('Memory dirty ratio updated');
+        }, 1000);
+    }
+
+    applyIoScheduler() {
+        const scheduler = document.getElementById('ioScheduler').value;
+        this.addToTerminal(`Setting I/O scheduler to: ${scheduler}`);
+        this.addToTerminal(`Command: echo ${scheduler} | sudo tee /sys/block/*/queue/scheduler`);
+        
+        setTimeout(() => {
+            this.addToTerminal('I/O scheduler applied successfully');
+            this.updateTweakStatus('diskTweaksStatus', 'applied');
+            this.showToast('I/O scheduler updated');
+        }, 1000);
+    }
+
+    applyReadAhead() {
+        const readAhead = document.getElementById('readAhead').value;
+        this.addToTerminal(`Setting read-ahead to: ${readAhead}KB`);
+        this.addToTerminal(`Command: blockdev --setra ${readAhead} /dev/sda`);
+        
+        setTimeout(() => {
+            this.addToTerminal('Read-ahead buffer applied successfully');
+            this.updateTweakStatus('diskTweaksStatus', 'applied');
+            this.showToast('Read-ahead buffer updated');
+        }, 1000);
+    }
+
+    applyTcpWindowScaling() {
+        const enabled = document.getElementById('tcpWindowScaling').checked;
+        const value = enabled ? 1 : 0;
+        this.addToTerminal(`Setting TCP window scaling to: ${enabled ? 'enabled' : 'disabled'}`);
+        this.addToTerminal(`Command: echo net.ipv4.tcp_window_scaling=${value} | sudo tee -a /etc/sysctl.conf`);
+        
+        setTimeout(() => {
+            this.addToTerminal('TCP window scaling applied successfully');
+            this.updateTweakStatus('networkTweaksStatus', 'applied');
+            this.showToast('TCP window scaling updated');
+        }, 1000);
+    }
+
+    applyNetworkBuffer() {
+        const buffer = document.getElementById('networkBuffer').value;
+        this.addToTerminal(`Setting network buffer to: ${buffer}`);
+        
+        if (buffer === 'highspeed') {
+            this.addToTerminal('Commands:');
+            this.addToTerminal('  echo net.core.rmem_max=268435456 | sudo tee -a /etc/sysctl.conf');
+            this.addToTerminal('  echo net.core.wmem_max=268435456 | sudo tee -a /etc/sysctl.conf');
+        } else if (buffer === 'lowlatency') {
+            this.addToTerminal('Commands:');
+            this.addToTerminal('  echo net.core.rmem_default=262144 | sudo tee -a /etc/sysctl.conf');
+            this.addToTerminal('  echo net.core.wmem_default=262144 | sudo tee -a /etc/sysctl.conf');
+        }
+        
+        setTimeout(() => {
+            this.addToTerminal('Network buffer applied successfully');
+            this.updateTweakStatus('networkTweaksStatus', 'applied');
+            this.showToast('Network buffer updated');
+        }, 1000);
+    }
+
+    applyCpuIdleStates() {
+        const enabled = document.getElementById('cpuIdleStates').value === '1';
+        this.addToTerminal(`Setting CPU idle states to: ${enabled ? 'enabled' : 'disabled'}`);
+        this.addToTerminal(`Command: echo ${enabled ? '1' : '0'} | sudo tee /sys/devices/system/cpu/cpu*/cpuidle/state*/disable`);
+        
+        setTimeout(() => {
+            this.addToTerminal('CPU idle states applied successfully');
+            this.updateTweakStatus('powerTweaksStatus', 'applied');
+            this.showToast('CPU idle states updated');
+        }, 1000);
+    }
+
+    applyUsbPowerManagement() {
+        const enabled = document.getElementById('usbPowerMgmt').checked;
+        this.addToTerminal(`Setting USB power management to: ${enabled ? 'enabled' : 'disabled'}`);
+        this.addToTerminal(`Command: echo '${enabled ? 'auto' : 'on'}' | sudo tee /sys/bus/usb/devices/*/power/control`);
+        
+        setTimeout(() => {
+            this.addToTerminal('USB power management applied successfully');
+            this.updateTweakStatus('powerTweaksStatus', 'applied');
+            this.showToast('USB power management updated');
+        }, 1000);
+    }
+
+    applyWifiPowerManagement() {
+        const enabled = document.getElementById('wifiPowerMgmt').checked;
+        this.addToTerminal(`Setting WiFi power management to: ${enabled ? 'enabled' : 'disabled'}`);
+        this.addToTerminal(`Command: sudo iw dev wlan0 set power_save ${enabled ? 'on' : 'off'}`);
+        
+        setTimeout(() => {
+            this.addToTerminal('WiFi power management applied successfully');
+            this.updateTweakStatus('powerTweaksStatus', 'applied');
+            this.showToast('WiFi power management updated');
+        }, 1000);
+    }
+
+    applyAllTweaks() {
+        this.addToTerminal('Applying all system tweaks...');
+        this.addToTerminal('This will optimize CPU, memory, disk, network, and power management settings.');
+        
+        // Apply all tweaks in sequence
+        setTimeout(() => {
+            this.applyCpuGovernor();
+            setTimeout(() => {
+                this.applySwappiness();
+                setTimeout(() => {
+                    this.applyIoScheduler();
+                    setTimeout(() => {
+                        this.applyTcpWindowScaling();
+                        setTimeout(() => {
+                            this.applyUsbPowerManagement();
+                            setTimeout(() => {
+                                this.addToTerminal('All tweaks applied successfully!');
+                                this.showToast('All system tweaks applied');
+                            }, 1000);
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 500);
+        }, 1000);
+    }
+
+    resetAllTweaks() {
+        this.addToTerminal('Resetting all system tweaks to default values...');
+        this.addToTerminal('This will restore original system settings.');
+        
+        setTimeout(() => {
+            // Reset all status indicators
+            this.updateTweakStatus('cpuTweaksStatus', 'pending');
+            this.updateTweakStatus('memoryTweaksStatus', 'pending');
+            this.updateTweakStatus('diskTweaksStatus', 'pending');
+            this.updateTweakStatus('networkTweaksStatus', 'pending');
+            this.updateTweakStatus('powerTweaksStatus', 'pending');
+            
+            this.addToTerminal('All tweaks reset to default values');
+            this.showToast('All tweaks reset');
+        }, 1000);
+    }
+
+    exportTweaksConfig() {
+        const config = {
+            timestamp: new Date().toISOString(),
+            cpu: {
+                governor: document.getElementById('cpuGovernor').value,
+                minFreq: document.getElementById('cpuMinFreq').value,
+                maxFreq: document.getElementById('cpuMaxFreq').value
+            },
+            memory: {
+                swappiness: document.getElementById('swappiness').value,
+                dirtyRatio: document.getElementById('dirtyRatio').value
+            },
+            disk: {
+                scheduler: document.getElementById('ioScheduler').value,
+                readAhead: document.getElementById('readAhead').value
+            },
+            network: {
+                tcpWindowScaling: document.getElementById('tcpWindowScaling').checked,
+                buffer: document.getElementById('networkBuffer').value
+            },
+            power: {
+                cpuIdle: document.getElementById('cpuIdleStates').value,
+                usbPower: document.getElementById('usbPowerMgmt').checked,
+                wifiPower: document.getElementById('wifiPowerMgmt').checked
+            }
+        };
+        
+        const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `linux-optimizer-tweaks-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        this.addToTerminal('Tweaks configuration exported successfully');
+        this.showToast('Configuration exported');
+    }
+
+    updateTweakStatus(elementId, status) {
+        const element = document.getElementById(elementId);
+        element.textContent = status === 'applied' ? 'Applied ✓' : 'Not Applied';
+        element.className = `category-status ${status}`;
     }
 }
 
